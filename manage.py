@@ -1,23 +1,29 @@
 from login import *
+from functions import *
 import pymysql
-
+import sys
 
 # Connect to mysql db
 db = pymysql.connect(user="root", password="honor4c", host="localhost")
 cursor = db.cursor()
 
 # Create new database in case of first time!
-mydatabase()
+mydatabase(db)
 cursor.execute("USE user_login_data")
-session = False                                                 # In case of login turn TRUE
+session = []                                                 # In case of login turn TRUE
 
-var = sys.argv[1]
-
-if var == '--new':                                              # '--new' arg to create a new user data and table
-    login_signup()
+if len(sys.argv) > 1:
+    var = sys.argv[1]
 else:
-    session = login()                                           # log into database
+    var = 'nothing'
 
-while session:
-    command = input(">>")
-    if command == 'add':
+session = [False]
+
+if var == '-n':                                              # '--new' arg to create a new user data and table
+    login_signup(db)
+elif var == '-l':
+    session = login(db)                                           # log into database
+else:
+    pass
+if session[0]:
+    add(db, session[1])

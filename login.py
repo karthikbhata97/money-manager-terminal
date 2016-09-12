@@ -1,9 +1,8 @@
-import pymysql
 import getpass
-import sys
 
 # Create database and table on USERS
-def mydatabase():
+def mydatabase(db):
+    cursor = db.cursor()
     try:
         cursor.execute("CREATE DATABASE user_login_data")
         cursor.execute("USE user_login_data")
@@ -17,7 +16,8 @@ def mydatabase():
         pass
 
 # Login for this current session
-def login():
+def login(db):
+    cursor = db.cursor()
     username = input("Username: ")
     data = cursor.execute("SELECT password FROM login_form WHERE username= %s ", (username,))
     if data != 1:
@@ -27,14 +27,15 @@ def login():
         password = getpass.getpass(prompt="Password: ")
         if (password,) == cursor.fetchone():
             print("Successful login!")
-            return True
+            return [True, username]
         else:
             print("Wrong password!")
             return False
 
 
 # SignUp and Create individual database
-def login_signup():
+def login_signup(db):
+    cursor = db.cursor()
     data = 1
     while data != 0:
         username = input("Username: ")
@@ -52,6 +53,7 @@ def login_signup():
                 db.commit()
                 cursor.execute("""CREATE TABLE %s
                 (
+                id int primary key auto_increment,
                 transaction_date date,
                 money int NOT NULL,
                 credit_debit char NOT NULL,
