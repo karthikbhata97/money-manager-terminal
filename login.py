@@ -2,8 +2,26 @@ import getpass
 
 # Create database and table on USERS
 # user_login_data is the main database
-# login_form maintains usernames and passwords
-# respective users have their table on their userrnames
+# login_form maintains username and passwords
+# respective users have their table on their username
+'''
+login_form:
+usename
+password
+last login
+'''
+
+'''
+user's table
+id primary auto increments
+transaction_date
+money(debit/credit)
+credit_debit (c or d)
+balance (present balance)
+message (a short message on present transaction)
+'''
+
+
 
 
 def mydatabase(db):
