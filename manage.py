@@ -19,6 +19,7 @@ else:
 
 session = [False]
 
+
 if var == '-n':                                              # '--new' arg to create a new user data and table
     login_signup(db)
 elif var == '-l':
@@ -36,5 +37,7 @@ while session[0]:
         session[0] = False
     elif command == 'help':
         help()
+    elif command == 'mstat':
+        mstat(db, session[1])
     else:
         pass
