@@ -1,5 +1,5 @@
 import getpass
-
+import datetime
 # Create database and table on USERS
 # user_login_data is the main database
 # login_form maintains username and passwords
@@ -50,6 +50,15 @@ def login(db):
         password = getpass.getpass(prompt="Password: ")
         if (password,) == cursor.fetchone():
             print("Successful login!")
+            data = cursor.execute("SELECT DATE(last_login) FROM login_form WHERE username=%s", (username,))
+            lastlogin = cursor.fetchone()
+            lastlogin = lastlogin[0]
+            if lastlogin is not None:
+                print("Your last login was on {}!".format(lastlogin))
+            now = datetime.datetime.now()
+            now = str(now.year) + "-" + str(now.month) + "-" + str(now.day)
+            cursor.execute("UPDATE login_form SET last_login=%s WHERE username=%s ", (now, username))
+            db.commit()
             return [True, username]
         else:
             print("Wrong password!")
