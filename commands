@@ -1,9 +1,5 @@
 1. add   ----------> Add a new entry
-
 2. monthly --------> Check the present balance
-
-3. passbook   -----> Check the present status
-
+3. balance   -----> Check the present status
 4. logout ---------> Turn off session
-
-4. help -----------> Command list
+5. help -----------> Command list

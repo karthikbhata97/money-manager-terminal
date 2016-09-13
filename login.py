@@ -1,6 +1,11 @@
 import getpass
 
 # Create database and table on USERS
+# user_login_data is the main database
+# login_form maintains usernames and passwords
+# respective users have their table on their userrnames
+
+
 def mydatabase(db):
     cursor = db.cursor()
     try:

@@ -30,4 +30,18 @@ def add(db, username):
     cursor.execute("UPDATE %s SET balance=%s WHERE id=%s" %(username, balance, id))
     db.commit()
 
+def balance(db, username):
+    cursor = db.cursor()
+    cursor.execute("SELECT MAX(id) FROM %s" %(username))
+    id = cursor.fetchone()
+    cursor.execute("SELECT balance FROM %s WHERE id=%s" %(username, id[0]))
+    present_balance = cursor.fetchone()
+    present_balance = present_balance[0]
+    print("Dear", username+"!")
+    print("Your present balance is ", present_balance)
+
+def help():
+    with open('commands', 'r') as my_file:
+        for line in my_file:
+            print(line)
 

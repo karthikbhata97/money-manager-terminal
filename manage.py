@@ -25,5 +25,16 @@ elif var == '-l':
     session = login(db)                                           # log into database
 else:
     pass
-if session[0]:
-    add(db, session[1])
+
+while session[0]:
+    command = input(">> ")
+    if command == 'add':
+        add(db, session[1])
+    elif command == 'balance':
+        balance(db, session[1])
+    elif command == 'logout':
+        session[0] = False
+    elif command == 'help':
+        help()
+    else:
+        pass
