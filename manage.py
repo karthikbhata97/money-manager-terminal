@@ -25,7 +25,7 @@ if var == '-n':                                              # '--new' arg to cr
 elif var == '-l':
     session = login(db)                                           # log into database
 else:
-    pass
+    help()
 
 while session[0]:
     command = input(">> ")
@@ -39,5 +39,7 @@ while session[0]:
         help()
     elif command == 'mstat':
         mstat(db, session[1])
+    elif command == 'stat':
+        stat(db, session[1])
     else:
-        pass
+        print("Invalid command!")

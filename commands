@@ -1,3 +1,10 @@
+FLAGS WHILE EXECUTION
+
+-l : Login
+-n : Create new database
+
+Commands:
+
 1. add   ----------> Add a new entry
 2. monthly --------> Check the present balance
 3. balance   ------> Check the present status
@@ -5,4 +12,3 @@
 5. help -----------> Command list
 6. mstat ----------> Mini statement
 7. stat -----------> Monthly statement
-

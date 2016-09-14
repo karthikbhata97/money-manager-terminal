@@ -1,6 +1,14 @@
 import datetime
 import openpyxl
-import os
+import calendar
+
+# add function adds a new transaction to the user's table
+# balance function checks the balance at that moment
+# help function will output the command file
+# mstat function will give a mini statement on total money spent, withdrawn and balance at this moment
+# stat will produce a xlsx file of user which has user's transactions month wise on each sheet
+
+
 
 def add(db, username):
     cursor = db.cursor()
@@ -36,11 +44,12 @@ def balance(db, username):
     cursor = db.cursor()
     cursor.execute("SELECT MAX(id) FROM %s" %(username))
     id = cursor.fetchone()
-    cursor.execute("SELECT balance FROM %s WHERE id=%s" %(username, id[0]))
-    present_balance = cursor.fetchone()
-    present_balance = present_balance[0]
-    print("Dear", username+"!")
-    print("Your present balance is ", present_balance)
+    if id[0] != None:
+        cursor.execute("SELECT balance FROM %s WHERE id=%s" %(username, id[0]))
+        present_balance = cursor.fetchone()
+        present_balance = present_balance[0]
+        print("Dear", username+"!")
+        print("Your present balance is ", present_balance)
 
 def help():
     with open('commands', 'r') as my_file:
@@ -52,27 +61,65 @@ def mstat(db, username):
     cursor = db.cursor()
     spent = 0
     credit = 0
-    cursor.execute("SELECT money FROM %s WHERE credit_debit='d'" %(username))
+    now = datetime.datetime.now()
+    cursor.execute("""SELECT money FROM %s
+    WHERE credit_debit='d'""" %(username))
     values = cursor.fetchall()
     for item in values:
         spent = spent + item[0]
-    cursor.execute("SELECT money FROM %s WHERE credit_debit='c'" %(username))
+    cursor.execute("""SELECT money FROM %s
+    WHERE credit_debit='c'""" % (username))
     values = cursor.fetchall()
     for item in values:
         credit = credit + item[0]
     cursor.execute("SELECT balance FROM %s WHERE id=(SELECT MAX(id) FROM %s)" %(username, username))
     final_balance = cursor.fetchone()
-    final_balance = final_balance[0]
-    print("Money spent:", spent)
-    print("Money withdrawn:", credit)
-    print("Final balance:", final_balance)
+    if final_balance != None:
+        final_balance = final_balance[0]
+        print("Money spent:", spent)
+        print("Money withdrawn:", credit)
+        print("Final balance:", final_balance)
 
 
 def stat(db, username):
-    filename = username + ".xlsx"
-    if not os.path.isfile(filename):
-        with open(filename, 'w') as file:
-            pass
+    cursor = db.cursor()
     wb = openpyxl.Workbook()
+    cursor.execute("""SELECT * FROM %s""" %(username))
+    tuple = cursor.fetchall()
+    month = 0
+    active_sheet = wb.active
+    # print(month)
+    for item in tuple:
+        this_month = item[1].month
+        if month != this_month:
+            month_name = calendar.month_name[this_month]
+            wb.create_sheet(title=month_name)
+            active_sheet = wb[month_name]
+            active_sheet['A1'] = 'ID'
+            active_sheet['B1'] = 'DATE'
+            active_sheet['C1'] = 'MONEY'
+            active_sheet['D1'] = 'CREDIT/DEBIT'
+            active_sheet['E1'] = 'BALANCE'
+            active_sheet['F1'] = 'MESSAGE'
+        month = this_month
+        idcell = 'A' + str(item[0]+1)
+        monthcell = 'B' + str(item[0]+1)
+        moneycell = 'C' + str(item[0]+1)
+        credit_debitcell = 'D' + str(item[0]+1)
+        balancecell = 'E' + str(item[0]+1)
+        messagecell = 'F' + str(item[0]+1)
+        active_sheet[idcell] = str(item[0])
+        active_sheet[monthcell] = item[1]
+        active_sheet[moneycell] = item[2]
+        active_sheet[credit_debitcell] = item[3]
+        active_sheet[balancecell] = item[4]
+        active_sheet[messagecell] = item[5]
+    all_sheets = wb.get_sheet_names()
+    total_sheets = len(all_sheets)
+    if total_sheets > 1:
+        wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
+        name = username + ".xlsx"
+        wb.save(name)
+
 
 
