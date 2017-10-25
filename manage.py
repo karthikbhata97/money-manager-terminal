@@ -4,7 +4,7 @@ import pymysql
 import sys
 
 # Connect to mysql db
-db = pymysql.connect(user="root", password="honor4c", host="localhost")
+db = pymysql.connect(user="root", password="", host="localhost")
 cursor = db.cursor()
 
 # Create new database in case of first time!

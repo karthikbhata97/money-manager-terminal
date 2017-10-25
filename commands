@@ -6,9 +6,8 @@ FLAGS WHILE EXECUTION
 Commands:
 
 1. add   ----------> Add a new entry
-2. monthly --------> Check the present balance
-3. balance   ------> Check the present status
-4. logout ---------> Turn off session
-5. help -----------> Command list
-6. mstat ----------> Mini statement
-7. stat -----------> Monthly statement
+2. balance   ------> Check the present status
+3. logout ---------> Turn off session
+4. help -----------> Command list
+5. mstat ----------> Mini statement
+6. stat -----------> Monthly statement

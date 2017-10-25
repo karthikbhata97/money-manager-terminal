@@ -39,6 +39,9 @@ def add(db, username):
             balance = balance - money
     cursor.execute("UPDATE %s SET balance=%s WHERE id=%s" %(username, balance, id))
     db.commit()
+    cursor.execute("SELECT balance FROM %s WHERE id=(SELECT MAX(id) FROM %s)" %(username, username))
+    balance_now = cursor.fetchone()
+    print("Your balance is: {}".format(balance_now[0]))
 
 def balance(db, username):
     cursor = db.cursor()
@@ -120,6 +123,7 @@ def stat(db, username):
         wb.remove_sheet(wb.get_sheet_by_name('Sheet'))
         name = username + ".xlsx"
         wb.save(name)
+        print("Successful! Check for the file {}.xlsx to read the data!".format(username))
 
 
 
