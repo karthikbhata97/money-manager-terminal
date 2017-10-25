@@ -45,7 +45,7 @@ def login(db):
     data = cursor.execute("SELECT password FROM login_form WHERE username= %s ", (username,))
     if data != 1:
         print("Invalid username!")
-        return False
+        return [False]
     else:
         password = getpass.getpass(prompt="Password: ")
         if (password,) == cursor.fetchone():
@@ -62,7 +62,7 @@ def login(db):
             return [True, username]
         else:
             print("Wrong password!")
-            return False
+            return [False]
 
 
 # SignUp and Create individual database
