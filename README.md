@@ -2,6 +2,8 @@ Transaction management on the terminal.
 
 Runs on python3
 
+Install mysql and create a database `user_login_data` and a table `login_form` in it.
+
 Dependencies:
 pymysql
 openpyxl
